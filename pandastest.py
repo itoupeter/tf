@@ -1,56 +1,52 @@
-import pandas as pd
+from pandas import DataFrame, Series
+import numpy as np
 
-'''
-You can think of a DataFrame as a group of Series that share an index.
-This makes it easy to select specific columns that you want from the
-DataFrame.
 
-Also a couple pointers:
-1) Selecting a single column from the DataFrame will return a Series
-2) Selecting multiple columns from the DataFrame will return a DataFrame
+def avg_medal_count():
+    '''
+    Compute the average number of bronze medals earned by countries who
+    earned at least one gold medal.
 
-*This playground is inspired by Greg Reda's post on Intro to Pandas Data Structures:
-http://www.gregreda.com/2013/10/26/intro-to-pandas-data-structures/
-'''
-# Change False to True to see Series indexing in action
-if False:
-    data = {'year': [2010, 2011, 2012, 2011, 2012, 2010, 2011, 2012],
-            'team': ['Bears', 'Bears', 'Bears', 'Packers', 'Packers', 'Lions',
-                     'Lions', 'Lions'],
-            'wins': [11, 8, 10, 15, 11, 6, 10, 4],
-            'losses': [5, 8, 6, 1, 5, 10, 6, 12]}
-    football = pd.DataFrame(data)
-    print (football['year'])
-    print ('')
-    print (football.year)  # shorthand for football['year']
-    print ('')
-    print (football[['year', 'wins', 'losses']])
+    Save this to a variable named avg_bronze_at_least_one_gold. You do not
+    need to call the function in your code when running it in the browser -
+    the grader will do that automatically when you submit or test it.
 
-'''
-Row selection can be done through multiple ways.
+    HINT-1:
+    You can retrieve all of the values of a Pandas column from a
+    data frame, "df", as follows:
+    df['column_name']
 
-Some of the basic and common methods are:
-   1) Slicing
-   2) An individual index (through the functions iloc or loc)
-   3) Boolean indexing
+    HINT-2:
+    The numpy.mean function can accept as an argument a single
+    Pandas column.
 
-You can also combine multiple selection requirements through boolean
-operators like & (and) or | (or)
-'''
-# Change False to True to see boolean indexing in action
-if True:
-    data = {'year': [2010, 2011, 2012, 2011, 2012, 2010, 2011, 2012],
-            'team': ['Bears', 'Bears', 'Bears', 'Packers', 'Packers', 'Lions',
-                     'Lions', 'Lions'],
-            'wins': [11, 8, 10, 15, 11, 6, 10, 4],
-            'losses': [5, 8, 6, 1, 5, 10, 6, 12]}
-    football = pd.DataFrame(data)
-    print (football.iloc[[0]])
-    print ("")
-    print (football.loc[[0]])
-    print ("")
-    print (football[3:5])
-    print ("")
-    print (football[football.wins > 10])
-    print ("")
-    print (football[(football.wins > 10) & (football.team == "Packers")])
+    For example, numpy.mean(df["col_name"]) would return the
+    mean of the values located in "col_name" of a dataframe df.
+    '''
+
+
+    countries = ['Russian Fed.', 'Norway', 'Canada', 'United States',
+                 'Netherlands', 'Germany', 'Switzerland', 'Belarus',
+                 'Austria', 'France', 'Poland', 'China', 'Korea',
+                 'Sweden', 'Czech Republic', 'Slovenia', 'Japan',
+                 'Finland', 'Great Britain', 'Ukraine', 'Slovakia',
+                 'Italy', 'Latvia', 'Australia', 'Croatia', 'Kazakhstan']
+
+    gold = [13, 11, 10, 9, 8, 8, 6, 5, 4, 4, 4, 3, 3, 2, 2, 2, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0]
+    silver = [11, 5, 10, 7, 7, 6, 3, 0, 8, 4, 1, 4, 3, 7, 4, 2, 4, 3, 1, 0, 0, 2, 2, 2, 1, 0]
+    bronze = [9, 10, 5, 12, 9, 5, 2, 1, 5, 7, 1, 2, 2, 6, 2, 4, 3, 1, 2, 1, 0, 6, 2, 1, 0, 1]
+
+    olympic_medal_counts = {'country_name':Series(countries),
+                            'gold': Series(gold),
+                            'silver': Series(silver),
+                            'bronze': Series(bronze)}
+    df = DataFrame(olympic_medal_counts)
+
+    # YOUR CODE HERE
+    countries_at_least_one_gold = df[df.bronze >= 1]
+    num_gold = countries_at_least_one_gold.gold
+    avg_bronze_at_least_one_gold = np.mean(num_gold)
+
+    return avg_bronze_at_least_one_gold
+
+print(avg_medal_count())

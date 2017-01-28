@@ -1,20 +1,7 @@
-import webbrowser
+import numpy as np
 
-class Movie():
-	def __init__(self, movie_title, movie_storyline, poster_image, trailer_youtube):
-		self.title = movie_title
-		self.storyline = movie_storyline
-		self.poster_image_url = poster_image
-		self.trailer_youtube_url = trailer_youtube
+A = np.array([[1, 2, 3], [3, 4, 5]], float)
 
-	def show_trailer(self):
-		webbrowser.open(self.trailer_youtube_url)
-
-toy_story = Movie(
-	"Toy Story",
-	"A toy story",
-	"http://...",
-	"http://...")
-
-print(toy_story.storyline)
-toy_story.show_trailer();
+print(A)
+print(np.linalg.norm(A, 2))
+print(np.linalg.svd(A))

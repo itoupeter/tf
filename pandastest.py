@@ -1,11 +1,22 @@
+import os
+import dicom as dc
+import numpy as np
 import pandas as pd
+import matplotlib.pyplot as plt
 
-PATH = r"C:\Users\itoup\Documents\GitHub\tf\lungcancer\stage1_sample_submission.csv\stage1_sample_submission.csv"
-df = pd.read_csv(PATH)
+INPUT_FOLDER = "D:/stage1/stage1"
+OUTPUT_FOLDER = "D:/stage1"
+patients = os.listdir(INPUT_FOLDER)
+patients.sort()
 
-print(df)
+scans_counts = []
 
-PATH = r"C:\Users\itoup\Documents\GitHub\tf\lungcancer\stage1_labels.csv\stage1_labels.csv"
-df = pd.read_csv(PATH)
+for patient in patients:
+    PATIENT_FOLDER = INPUT_FOLDER + '/' + patient
+    scans = os.listdir(PATIENT_FOLDER)
+    scans_counts.append(len(scans))
+
+df = pd.DataFrame({"id": patients, "scans_count": scans_counts})
+df.to_csv(OUTPUT_FOLDER + "/patients_info.csv")
 
 print(df)

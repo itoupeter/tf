@@ -1,9 +1,25 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-a = np.random.randn(100)
-noise = np.random.randn(100) * 0.01
-b = a * 0.33 + 0.2 + noise
+a = np.array([[1, 2, 3], [4, 5, 6]])
+print(a)
 
-plt.plot(a, b, 'o')
-plt.show()
+b = np.transpose(a)
+print(b)
+
+ab = np.dot(a, b)
+print(ab)
+
+u, s, v = np.linalg.svd(ab)
+print(u)
+print(s)
+print(v)
+print("-----------------------")
+
+ba = np.dot(b, a)
+print(ba)
+
+u, s, v = np.linalg.svd(ba)
+print(u)
+print(s)
+print(v)

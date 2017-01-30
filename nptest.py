@@ -1,25 +1,14 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-a = np.array([[1, 2, 3], [4, 5, 6]])
-print(a)
+a = np.random.rand(4, 4)
+b = np.random.rand(4, 1)
 
-b = np.transpose(a)
-print(b)
+r1 = np.dot(np.transpose(b), a)
+r1 = np.dot(r1, b)
+print(r1)
 
-ab = np.dot(a, b)
-print(ab)
-
-u, s, v = np.linalg.svd(ab)
-print(u)
-print(s)
-print(v)
-print("-----------------------")
-
-ba = np.dot(b, a)
-print(ba)
-
-u, s, v = np.linalg.svd(ba)
-print(u)
-print(s)
-print(v)
+a = np.transpose(a)
+r1 = np.dot(np.transpose(b), a)
+r1 = np.dot(r1, b)
+print(r1)

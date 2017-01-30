@@ -27,7 +27,7 @@ def get_pixels_hu(scans):
 
     # Set outside-of-scan pixels to 0
     # The intercept is usually -1024, so air is approximately 0
-    image[image == -2000] = 0
+    # image[image == -2000] = 0
 
     # Convert to Hounsfield units (HU)
     intercept = scans[0].RescaleIntercept
@@ -58,11 +58,15 @@ def resample(image, scan, new_spacing=[1,1,1]):
 
 DATASET_DIR = "D:/stage1/stage1"
 OUTPUT_DIR = "D:/stage1/mat_resampled/"
+all_patient_ids = os.listdir(DATASET_DIR)
+all_patient_ids.sort()
+i = 0
 
-for patient_id in os.listdir(DATASET_DIR):
+for patient_id in all_patient_ids:
     DCM_PATH = DATASET_DIR + "/" + patient_id
     OUTPUT_PATH = OUTPUT_DIR + patient_id
     dcm = load_scan(DCM_PATH)
     mat = get_pixels_hu(dcm)
-    mat_resampled, dummy = resample(mat, dcm)
+    mat_resampled, spacing = resample(mat, dcm)
     np.save(OUTPUT_PATH, mat_resampled)
+    print(i, mat.shape, mat_resampled.shape)

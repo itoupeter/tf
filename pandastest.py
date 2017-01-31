@@ -1,14 +1,23 @@
-import os
-import dicom as dc
-import numpy as np
-import pandas as pd
-import matplotlib.pyplot as plt
+import pandas
+import numpy
 
-PATH = "D:/stage1/patients_info.csv"
-df = pd.read_csv(PATH)
+def imputation(filename):
+    # Pandas dataframes have a method called 'fillna(value)', such that you can
+    # pass in a single value to replace any NAs in a dataframe or series. You
+    # can call it like this:
+    #     dataframe['column'] = dataframe['column'].fillna(value)
+    #
+    # Using the numpy.mean function, which calculates the mean of a numpy
+    # array, impute any missing values in our Lahman baseball
+    # data sets 'weight' column by setting them equal to the average weight.
+    #
+    # You can access the 'weight' colum in the baseball data frame by
+    # calling baseball['weight']
 
-plt.hist(df.scans_count, bins = 40)
-plt.title("Frequency of Scan Count")
-plt.xlabel("# of Scans")
-plt.ylabel("# of Patients")
-plt.show()
+    baseball = pandas.read_csv(filename)
+
+    #YOUR CODE GOES HERE
+    mean_weight = numpy.mean(basebal.weight)
+    baseball.weight.fillna(mean_weight, inplace = True)
+
+    return baseball

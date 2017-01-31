@@ -1,16 +1,12 @@
 import pandas
 import pandasql
 
-def avg_weekend_temperature(filename):
+def avg_min_temperature(filename):
     '''
     This function should run a SQL query on a dataframe of
-    weather data.  The SQL query should return one column and
-    one row - the average meantempi on days that are a Saturday
-    or Sunday (i.e., the the average mean temperature on weekends).
-    The dataframe will be titled 'weather_data' and you can access
-    the date in the dataframe via the 'date' column.
-
-    You'll need to provide  the SQL query.
+    weather data. More specifically you want to find the average
+    minimum temperature (mintempi column of the weather dataframe) on
+    rainy days where the minimum temperature is greater than 55 degrees.
 
     You might also find that interpreting numbers as integers or floats may not
     work initially.  In order to get around this issue, it may be useful to cast
@@ -19,21 +15,17 @@ def avg_weekend_temperature(filename):
     write something like where cast(maxtempi as integer) = 76, as opposed to simply
     where maxtempi = 76.
 
-    Also, you can convert dates to days of the week via the 'strftime' keyword in SQL.
-    For example, cast (strftime('%w', date) as integer) will return 0 if the date
-    is a Sunday or 6 if the date is a Saturday.
-
     You can see the weather data that we are passing in below:
     https://s3.amazonaws.com/content.udacity-data.com/courses/ud359/weather_underground.csv
     '''
     weather_data = pandas.read_csv(filename)
 
     q = """
-    SELECT avg(meantempi)
+    SELECT avg(mintempi)
     FROM weather_data
-    WHERE cast(strftime('%w', date) as integer) = 0 or cast(strftime('%w', date) as integer) = 6
+    WHERE cast(rain as integer) = 1 and cast(mintempi as integer) > 55
     """
 
     #Execute your SQL command against the pandas frame
-    mean_temp_weekends = pandasql.sqldf(q.lower(), locals())
-    return mean_temp_weekends
+    avg_min_temp_rainy = pandasql.sqldf(q.lower(), locals())
+    return avg_min_temp_rainy

@@ -1,31 +1,50 @@
-import pandas
-import pandasql
+import csv
 
-def avg_min_temperature(filename):
+def fix_turnstile_data(filenames):
     '''
-    This function should run a SQL query on a dataframe of
-    weather data. More specifically you want to find the average
-    minimum temperature (mintempi column of the weather dataframe) on
-    rainy days where the minimum temperature is greater than 55 degrees.
+    Filenames is a list of MTA Subway turnstile text files. A link to an example
+    MTA Subway turnstile text file can be seen at the URL below:
+    http://web.mta.info/developers/data/nyct/turnstile/turnstile_110507.txt
 
-    You might also find that interpreting numbers as integers or floats may not
-    work initially.  In order to get around this issue, it may be useful to cast
-    these numbers as integers.  This can be done by writing cast(column as integer).
-    So for example, if we wanted to cast the maxtempi column as an integer, we would actually
-    write something like where cast(maxtempi as integer) = 76, as opposed to simply
-    where maxtempi = 76.
+    As you can see, there are numerous data points included in each row of the
+    a MTA Subway turnstile text file.
 
-    You can see the weather data that we are passing in below:
-    https://s3.amazonaws.com/content.udacity-data.com/courses/ud359/weather_underground.csv
+    You want to write a function that will update each row in the text
+    file so there is only one entry per row. A few examples below:
+    A002,R051,02-00-00,05-28-11,00:00:00,REGULAR,003178521,001100739
+    A002,R051,02-00-00,05-28-11,04:00:00,REGULAR,003178541,001100746
+    A002,R051,02-00-00,05-28-11,08:00:00,REGULAR,003178559,001100775
+
+    Write the updates to a different text file in the format of "updated_" + filename.
+    For example:
+        1) if you read in a text file called "turnstile_110521.txt"
+        2) you should write the updated data to "updated_turnstile_110521.txt"
+
+    The order of the fields should be preserved. Remember to read through the
+    Instructor Notes below for more details on the task.
+
+    In addition, here is a CSV reader/writer introductory tutorial:
+    http://goo.gl/HBbvyy
+
+    You can see a sample of the turnstile text file that's passed into this function
+    and the the corresponding updated file by downloading these files from the resources:
+
+    Sample input file: turnstile_110528.txt
+    Sample updated file: solution_turnstile_110528.txt
     '''
-    weather_data = pandas.read_csv(filename)
+    for name in filenames:
+        # your code here
+        output_name = "updated_" + name
+        with open(output_name, 'w') as outfile:
+            writer = csv.writer(outfile, lineterminator = '\n')
+            with open(name, 'r') as infile:
+                reader = csv.reader(infile)
+                for row in reader:
+                    row_head = row[0:3]
+                    row_len = len(row)
+                    for i in range(3, row_len - 1, 5):
+                        new_row = row[i:i + 5]
+                        writer.writerow(row_head + new_row)
 
-    q = """
-    SELECT avg(mintempi)
-    FROM weather_data
-    WHERE cast(rain as integer) = 1 and cast(mintempi as integer) > 55
-    """
 
-    #Execute your SQL command against the pandas frame
-    avg_min_temp_rainy = pandasql.sqldf(q.lower(), locals())
-    return avg_min_temp_rainy
+fix_turnstile_data(['in.txt'])

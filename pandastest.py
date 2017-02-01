@@ -1,16 +1,33 @@
 import numpy as np
+import pandas
+import matplotlib.pyplot as plt
 
-def compute_r_squared(data, predictions):
-    # Write a function that, given two input numpy arrays, 'data', and 'predictions,'
-    # returns the coefficient of determination, R^2, for the model that produced
-    # predictions.
-    #
-    # Numpy has a couple of functions -- np.mean() and np.sum() --
-    # that you might find useful, but you don't have to use them.
+def entries_histogram(turnstile_weather):
+    '''
+    Before we perform any analysis, it might be useful to take a
+    look at the data we're hoping to analyze. More specifically, let's
+    examine the hourly entries in our NYC subway data and determine what
+    distribution the data follows. This data is stored in a dataframe
+    called turnstile_weather under the ['ENTRIESn_hourly'] column.
 
-    # YOUR CODE GOES HERE
-    r_squared = 1 - np.divide( \
-        np.square(data - predictions).sum(), \
-        np.square(data - np.mean(data)).sum())
+    Let's plot two histograms on the same axes to show hourly
+    entries when raining vs. when not raining. Here's an example on how
+    to plot histograms with pandas and matplotlib:
+    turnstile_weather['column_to_graph'].hist()
 
-    return r_squared
+    Your histogram may look similar to bar graph in the instructor notes below.
+
+    You can read a bit about using matplotlib and pandas to plot histograms here:
+    http://pandas.pydata.org/pandas-docs/stable/visualization.html#histograms
+
+    You can see the information contained within the turnstile weather data here:
+    https://s3.amazonaws.com/content.udacity-data.com/courses/ud359/turnstile_data_master_with_weather.csv
+    '''
+
+    plt.figure()
+    rain = turnstile_weather[turnstile_weather.rain == 1].ENTRIESn_hourly
+    no_rain = turnstile_weather[turnstile_weather.rain == 0].ENTRIESn_hourly
+    rain[rain <= 6000].hist(bins = 20, color = 'r', alpha = 0.4)
+    no_rain[no_rain <= 6000].hist(bins = 20, color = 'b', alpha = 0.4)
+    plt.legend(['rain', 'no rain'])
+    return plt

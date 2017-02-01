@@ -1,23 +1,38 @@
-from datetime import datetime
+import numpy
+import pandas
 
-def reformat_subway_dates(date):
-    '''
-    The dates in our subway data are formatted in the format month-day-year.
-    The dates in our weather underground data are formatted year-month-day.
+def compute_cost(features, values, theta):
+    """
+    Compute the cost of a list of parameters, theta, given a list of features
+    (input data points) and values (output data points).
+    """
+    m = len(values)
+    sum_of_square_errors = numpy.square(numpy.dot(features, theta) - values).sum()
+    cost = sum_of_square_errors / (2*m)
 
-    In order to join these two data sets together, we'll want the dates formatted
-    the same way.  Write a function that takes as its input a date in the MTA Subway
-    data format, and returns a date in the weather underground format.
+    return cost
 
-    Hint:
-    There are a couple of useful functions in the datetime library that will
-    help on this assignment, called strptime and strftime.
-    More info can be seen here and further in the documentation section:
-    http://docs.python.org/2/library/datetime.html#datetime.datetime.strptime
-    '''
+def gradient_descent(features, values, theta, alpha, num_iterations):
+    """
+    Perform gradient descent given a data set with an arbitrary number of features.
+    """
 
-    dt = datetime.strptime(date, '%m-%d-%y')
-    date_formatted = dt.strftime('%Y-%m-%d')
-    return date_formatted
+    # Write code here that performs num_iterations updates to the elements of theta.
+    # times. Every time you compute the cost for a given list of thetas, append it
+    # to cost_history.
+    # See the Instructor notes for hints.
+    
+    cost_history = []
 
-print(reformat_subway_dates('10-03-93'))
+    ###########################
+    ### YOUR CODE GOES HERE ###
+    ###########################
+    m = len(values)
+
+    for i in range(0, num_iterations):
+        cost = compute_cost(features, values, theta)
+        cost_history.append(cost)
+        y_hat = numpy.dot(features, theta)
+        theta = theta + alpha / m * numpy.dot((values - y_hat), features)
+
+    return theta, pandas.Series(cost_history) # leave this line for the grader

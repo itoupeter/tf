@@ -1,19 +1,23 @@
-import pandas
+from datetime import datetime
 
-def time_to_hour(time):
+def reformat_subway_dates(date):
     '''
-    Given an input variable time that represents time in the format of:
-    "00:00:00" (hour:minutes:seconds)
+    The dates in our subway data are formatted in the format month-day-year.
+    The dates in our weather underground data are formatted year-month-day.
 
-    Write a function to extract the hour part from the input variable time
-    and return it as an integer. For example:
-        1) if hour is 00, your code should return 0
-        2) if hour is 01, your code should return 1
-        3) if hour is 21, your code should return 21
+    In order to join these two data sets together, we'll want the dates formatted
+    the same way.  Write a function that takes as its input a date in the MTA Subway
+    data format, and returns a date in the weather underground format.
 
-    Please return hour as an integer.
+    Hint:
+    There are a couple of useful functions in the datetime library that will
+    help on this assignment, called strptime and strftime.
+    More info can be seen here and further in the documentation section:
+    http://docs.python.org/2/library/datetime.html#datetime.datetime.strptime
     '''
-    h, m, s = time.split(':')
 
-    hour = int(h)
-    return hour
+    dt = datetime.strptime(date, '%m-%d-%y')
+    date_formatted = dt.strftime('%Y-%m-%d')
+    return date_formatted
+
+print(reformat_subway_dates('10-03-93'))

@@ -1,38 +1,16 @@
-import numpy
-import pandas
+import numpy as np
 
-def compute_cost(features, values, theta):
-    """
-    Compute the cost of a list of parameters, theta, given a list of features
-    (input data points) and values (output data points).
-    """
-    m = len(values)
-    sum_of_square_errors = numpy.square(numpy.dot(features, theta) - values).sum()
-    cost = sum_of_square_errors / (2*m)
+def compute_r_squared(data, predictions):
+    # Write a function that, given two input numpy arrays, 'data', and 'predictions,'
+    # returns the coefficient of determination, R^2, for the model that produced
+    # predictions.
+    #
+    # Numpy has a couple of functions -- np.mean() and np.sum() --
+    # that you might find useful, but you don't have to use them.
 
-    return cost
+    # YOUR CODE GOES HERE
+    r_squared = 1 - np.divide( \
+        np.square(data - predictions).sum(), \
+        np.square(data - np.mean(data)).sum())
 
-def gradient_descent(features, values, theta, alpha, num_iterations):
-    """
-    Perform gradient descent given a data set with an arbitrary number of features.
-    """
-
-    # Write code here that performs num_iterations updates to the elements of theta.
-    # times. Every time you compute the cost for a given list of thetas, append it
-    # to cost_history.
-    # See the Instructor notes for hints.
-    
-    cost_history = []
-
-    ###########################
-    ### YOUR CODE GOES HERE ###
-    ###########################
-    m = len(values)
-
-    for i in range(0, num_iterations):
-        cost = compute_cost(features, values, theta)
-        cost_history.append(cost)
-        y_hat = numpy.dot(features, theta)
-        theta = theta + alpha / m * numpy.dot((values - y_hat), features)
-
-    return theta, pandas.Series(cost_history) # leave this line for the grader
+    return r_squared
